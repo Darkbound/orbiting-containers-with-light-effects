@@ -1,5 +1,39 @@
+/**
+ *
+ * @param {{ mainContainerId: string,
+ *           partnerLogosSize: number,
+ *           partnerLogos: [{ src: string, lightColor: string }],
+ *           ownLogo: { src: string, lightColor: string, size: number },
+ *           circles: {
+ *             outer: {
+ *               color: string
+ *               size: number
+ *             },
+ *             inner: {
+ *               color: string
+ *               size: number
+ *             }
+ *           },
+ *           animations: {
+ *             mainRotation: {
+ *               speed: number
+ *             },
+ *             partnerLights: {
+ *               speed: number,
+ *               asynchronous: boolean
+ *             },
+ *             ownLight: {
+ *               delay: number,
+ *               speed: number,
+ *               size: number
+ *             }
+ *           }
+ * }} options animation options
+ * @param options.mainContainerId the id of the main container in which the animation HTML will be inserted
+ */
 function OrbitingLogosAnimation(options) {
-  const mainContainer = document.querySelector(`#${options.mainContainerId}`);
+  const { mainContainerId, circles, partnerLogosSize, partnerLogos, ownLogo, animations } = options;
+  const mainContainer = document.querySelector(`#${mainContainerId}`);
   const getMainContainerSmallestSize = () =>
     mainContainer.clientWidth <= mainContainer.clientHeight ? mainContainer.clientWidth : mainContainer.clientHeight;
   const mainContainerSize = getMainContainerSmallestSize();
@@ -52,16 +86,16 @@ function OrbitingLogosAnimation(options) {
       position: `relative`,
     });
     static outerCircles = () => ({
-      ...CSS.squareSize(`${mainContainerSize - options.partnerLogosSize}px`),
-      ...CSS.absoluteCenter(`${options.partnerLogosSize / 2}px`),
+      ...CSS.squareSize(`${mainContainerSize - partnerLogosSize}px`),
+      ...CSS.absoluteCenter(`${partnerLogosSize / 2}px`),
       borderRadius: `50%`,
-      boxShadow: `0 0 0 ${options.circles.inner.size}px #${options.circles.inner.color} inset, 
-                  0 0 0 ${options.circles.outer.size}px #${options.circles.outer.color}`,
+      boxShadow: `0 0 0 ${circles.inner.size}px #${circles.inner.color} inset, 
+                  0 0 0 ${circles.outer.size}px #${circles.outer.color}`,
     });
     static ownLogoContainer = () => ({
       ...CSS.fullSize,
-      ...CSS.maxSize(`${options.ownLogo.size}px`),
-      ...CSS.absoluteCenter(`calc(50% - ${options.ownLogo.size / 2}px)`),
+      ...CSS.maxSize(`${ownLogo.size}px`),
+      ...CSS.absoluteCenter(`calc(50% - ${ownLogo.size / 2}px)`),
       zIndex: `10`,
     });
     static ownLogo = () => ({
@@ -71,35 +105,35 @@ function OrbitingLogosAnimation(options) {
     static ownLogoLight = () => ({
       ...CSS.fullSize,
       ...CSS.maxSize(`1px`),
-      ...CSS.absoluteCenter(`${options.ownLogo.size / 2}px`),
+      ...CSS.absoluteCenter(`${ownLogo.size / 2}px`),
       borderRadius: `50%`,
-      animation: `ownLogoAnimation ${LogoMath.convertSpeedToTime(options.animations.ownLight.speed)}s infinite`,
-      animationDelay: `${LogoMath.convertSpeedToTime(options.animations.ownLight.delay)}s`,
+      animation: `ownLogoAnimation ${LogoMath.convertSpeedToTime(animations.ownLight.speed)}s infinite`,
+      animationDelay: `${LogoMath.convertSpeedToTime(animations.ownLight.delay)}s`,
       opacity: `0`,
       zIndex: `-1`,
     });
     static ownLogoImage = () => ({
       ...CSS.fullSize,
-      ...CSS.maxSize(`${options.ownLogo.size}px`),
+      ...CSS.maxSize(`${ownLogo.size}px`),
     });
     static partnerLogoContainer = () => ({
       ...CSS.flexMiddle,
       position: `absolute`,
-      top: `calc(50% - ${options.partnerLogosSize / 2}px)`,
+      top: `calc(50% - ${partnerLogosSize / 2}px)`,
       width: `${mainContainerSize / 2}px`,
-      height: `${options.partnerLogosSize}px`,
+      height: `${partnerLogosSize}px`,
       transformOrigin: `center right`,
     });
     static partnerLogo = () => ({
       ...CSS.fullSize,
       ...CSS.flexMiddle,
-      ...CSS.maxSize(`${options.partnerLogosSize}px`),
+      ...CSS.maxSize(`${partnerLogosSize}px`),
       borderRadius: `50%`,
       border: `1px solid black`,
     });
     static partnerLogoImg = () => ({
       ...CSS.fullSize,
-      ...CSS.maxSize(`${options.partnerLogosSize}px`),
+      ...CSS.maxSize(`${partnerLogosSize}px`),
     });
     static partnerLogoLine = () => ({
       width: `100%`,
@@ -109,7 +143,7 @@ function OrbitingLogosAnimation(options) {
     });
     static partnerLogosContainer = () => ({
       ...CSS.fullSize,
-      animation: `mainRotation ${LogoMath.convertSpeedToTime(options.animations.mainRotation.speed)}s infinite linear`,
+      animation: `mainRotation ${LogoMath.convertSpeedToTime(animations.mainRotation.speed)}s infinite linear`,
       transformOrigin: `center`,
     });
     static partnerLogoLight = () => ({
@@ -118,9 +152,9 @@ function OrbitingLogosAnimation(options) {
       backgroundColor: `blue`,
       borderRadius: `50%`,
       position: `absolute`,
-      left: `${options.partnerLogosSize / 2}px`,
+      left: `${partnerLogosSize / 2}px`,
       animation: `partnerLightAnimation ${LogoMath.convertSpeedToTime(
-        options.animations.partnerLights.speed
+        animations.partnerLights.speed
       )}s ease-in infinite`,
     });
     static lightGlow = ({ color = "#FFFFFF", size = "20px" }) => ({
@@ -208,11 +242,11 @@ function OrbitingLogosAnimation(options) {
     mainContainer.innerHTML += HTML.logoAnimationWrapper();
 
     Selectors.mainWrapper().innerHTML += HTML.outerCircles();
-    Selectors.mainWrapper().innerHTML += HTML.ownLogo(options.ownLogo.src);
+    Selectors.mainWrapper().innerHTML += HTML.ownLogo(ownLogo.src);
     Selectors.mainWrapper().innerHTML += HTML.partnerLogosContainer();
 
-    for (let i = 0; i < options.partnerLogos.length; i++) {
-      Selectors.partnerLogosContainer().innerHTML += HTML.partnerLogos(options.partnerLogos[i].src);
+    for (let i = 0; i < partnerLogos.length; i++) {
+      Selectors.partnerLogosContainer().innerHTML += HTML.partnerLogos(partnerLogos[i].src);
     }
   };
 
@@ -230,17 +264,17 @@ function OrbitingLogosAnimation(options) {
 
     Object.assign(Selectors.ownLogoLight().style, {
       ...CSS.lightGlow({
-        color: options.ownLogo.lightColor,
-        size: `${options.animations.ownLight.size}px`,
+        color: ownLogo.lightColor,
+        size: `${animations.ownLight.size}px`,
       }),
     });
 
-    for (let i = 0; i < options.partnerLogos.length; i++) {
-      let initialAngle = LogoMath.RadiansToDegrees(LogoMath.EquallySpacedCircleAngle(options.partnerLogos.length) * i);
+    for (let i = 0; i < partnerLogos.length; i++) {
+      let initialAngle = LogoMath.RadiansToDegrees(LogoMath.EquallySpacedCircleAngle(partnerLogos.length) * i);
       Selectors.arrays.partnerLogoContainer()[i].style.transform = CSS.rotate(initialAngle).transform;
 
       Object.assign(Selectors.arrays.partnerLogoLight()[i].style, {
-        ...CSS.lightGlow({ color: options.partnerLogos[i].lightColor }),
+        ...CSS.lightGlow({ color: partnerLogos[i].lightColor }),
       });
     }
   };
