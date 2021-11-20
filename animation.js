@@ -12,15 +12,20 @@ window.addEventListener("DOMContentLoaded", () => {
     },
     animations: {
       mainRotation: {
-        speed: 50,
+        speed: 500,
       },
       partnerLights: {
         asynchronous: false,
-        speed: 5, //10 = 1s, //do some math and time it with the own logo animation
+        speed: 50, //10 = 1s, //do some math and time it with the own logo animation
+      },
+      ownLight: {
+        delay: 20,
+        speed: 50,
       },
     },
   };
 
+  // TODO: Rename to orbiting planets/sun
   // math about the sizes so that its responsive in any container
   // what can be variable, and what must be predefined?
 
@@ -79,8 +84,8 @@ window.addEventListener("DOMContentLoaded", () => {
       ...CSS.maxSize(`1px`),
       ...CSS.absoluteCenter(`45px`),
       borderRadius: `50%`,
-      animation: `ownLogoAnimation 2s infinite`,
-      animationDelay: `600ms`,
+      animation: `ownLogoAnimation ${LogoMath.convertSpeedToTime(options.animations.ownLight.speed)}s infinite`,
+      animationDelay: `${LogoMath.convertSpeedToTime(options.animations.ownLight.delay)}s`,
       opacity: `0`,
       zIndex: `-1`,
     });
@@ -169,6 +174,10 @@ window.addEventListener("DOMContentLoaded", () => {
         40% {
           opacity: 1;
         }
+
+        100% {
+          opacity: 0;
+        }
       }`,
     };
   }
@@ -195,10 +204,106 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const ownLogo = {
     src: "img/pancake.png",
-    lightColor: "#FFFFFF",
+    lightColor: "#00FF00",
   };
 
   const logos = [
+    {
+      src: "img/binance.png",
+      lightColor: "#ffcc00",
+    },
+    {
+      src: "img/kucoin.png",
+      lightColor: "#6699ff",
+    },
+    {
+      src: "img/hit.png",
+      lightColor: "#cc3399",
+    },
+    {
+      src: "img/huobi.png",
+      lightColor: "#0066cc",
+    },
+    {
+      src: "img/kraken.png",
+      lightColor: "#00ff99",
+    },
+    {
+      src: "img/pancake.png",
+      lightColor: "#9900ff",
+    },
+    {
+      src: "img/binance.png",
+      lightColor: "#ffcc00",
+    },
+    {
+      src: "img/kucoin.png",
+      lightColor: "#6699ff",
+    },
+    {
+      src: "img/hit.png",
+      lightColor: "#cc3399",
+    },
+    {
+      src: "img/huobi.png",
+      lightColor: "#0066cc",
+    },
+    {
+      src: "img/kraken.png",
+      lightColor: "#00ff99",
+    },
+    {
+      src: "img/pancake.png",
+      lightColor: "#9900ff",
+    },
+    {
+      src: "img/binance.png",
+      lightColor: "#ffcc00",
+    },
+    {
+      src: "img/kucoin.png",
+      lightColor: "#6699ff",
+    },
+    {
+      src: "img/hit.png",
+      lightColor: "#cc3399",
+    },
+    {
+      src: "img/huobi.png",
+      lightColor: "#0066cc",
+    },
+    {
+      src: "img/kraken.png",
+      lightColor: "#00ff99",
+    },
+    {
+      src: "img/pancake.png",
+      lightColor: "#9900ff",
+    },
+    {
+      src: "img/binance.png",
+      lightColor: "#ffcc00",
+    },
+    {
+      src: "img/kucoin.png",
+      lightColor: "#6699ff",
+    },
+    {
+      src: "img/hit.png",
+      lightColor: "#cc3399",
+    },
+    {
+      src: "img/huobi.png",
+      lightColor: "#0066cc",
+    },
+    {
+      src: "img/kraken.png",
+      lightColor: "#00ff99",
+    },
+    {
+      src: "img/pancake.png",
+      lightColor: "#9900ff",
+    },
     {
       src: "img/binance.png",
       lightColor: "#ffcc00",
