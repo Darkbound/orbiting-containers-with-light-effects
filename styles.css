@@ -1,11 +1,18 @@
 body {
-  /* background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3); */
+  background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
   background-size: 2500% 2500%;
 
-  /* -webkit-animation: rainbow 25s ease infinite;
+  -webkit-animation: rainbow 25s ease infinite;
   -z-animation: rainbow 25s ease infinite;
   -o-animation: rainbow 25s ease infinite;
-  animation: rainbow 25s ease infinite; */
+  animation: rainbow 25s ease infinite;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 @-webkit-keyframes rainbow {
@@ -54,8 +61,10 @@ body {
 }
 
 #logoAnimationContainer {
-  width: 600px;
-  height: 600px;
-  margin: 150px auto 0;
+  width: 400px;
+  height: 500px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
