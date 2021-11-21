@@ -20,6 +20,8 @@
  * @param {number} options.animations.ownLight.speed the duration of the central light 10 units = 1s
  * @param {number} options.animations.ownLight.size the size of the central light, treated as px
  */
+
+//TODO: add option to disable circles / if circles is not present in options disable them
 function OrbitingLogosAnimation(options) {
   const { mainContainerId, circles, partnerLogosSize, partnerLogos, ownLogo, animations } = options;
   const mainContainer = document.querySelector(`#${mainContainerId}`);
@@ -106,7 +108,9 @@ function OrbitingLogosAnimation(options) {
       ...CSS.maxSize(`${ownLogo.size}px`),
     });
     static partnerLogoContainer = () => ({
-      ...CSS.flexMiddle,
+      display: `flex`,
+      alignItems: `center`,
+      justifyContent: `start`,
       position: `absolute`,
       top: `calc(50% - ${partnerLogosSize / 2}px)`,
       width: `${mainContainerSize / 2}px`,
@@ -117,17 +121,19 @@ function OrbitingLogosAnimation(options) {
       ...CSS.fullSize,
       ...CSS.flexMiddle,
       ...CSS.maxSize(`${partnerLogosSize}px`),
-      borderRadius: `50%`,
-      border: `1px solid black`,
+      // borderRadius: `50%`,
+      // border: `1px solid black`,
     });
     static partnerLogoImg = () => ({
       ...CSS.fullSize,
       ...CSS.maxSize(`${partnerLogosSize}px`),
     });
     static partnerLogoLine = () => ({
-      width: `100%`,
-      height: `0px`,
-      border: `0.5px solid black`,
+      ...CSS.absoluteCenter(`${partnerLogosSize / 2}px`),
+      width: `calc(100% - ${partnerLogosSize / 2}px`,
+      height: `1px`,
+      backgroundColor: `black`,
+      // border: `0.5px solid black`,
       zIndex: `-1`,
     });
     static partnerLogosContainer = () => ({
@@ -138,7 +144,6 @@ function OrbitingLogosAnimation(options) {
     static partnerLogoLight = () => ({
       ...CSS.fullSize,
       ...CSS.maxSize(`1px`),
-      backgroundColor: `blue`,
       borderRadius: `50%`,
       position: `absolute`,
       left: `${partnerLogosSize / 2}px`,
@@ -241,16 +246,20 @@ function OrbitingLogosAnimation(options) {
 
   // CSS
   const applyCSS = () => {
+    /** For the two Object.keys approaches to work, the keys of the objects in CSS and in Selectors must match! */
+    // CSS for all elements that are not arrays
     Object.keys(Selectors).forEach(
       (selector) => selector !== "arrays" && Object.assign(Selectors[selector]().style, CSS[selector]())
     );
 
+    // CSS for all elements that are arrays
     Object.keys(Selectors.arrays).forEach((arraySelector) => {
       for (let i = 0; i < Selectors.arrays[arraySelector]().length; i++) {
         Object.assign(Selectors.arrays[arraySelector]()[i].style, CSS[arraySelector]());
       }
     });
 
+    // CSS for own logo light
     Object.assign(Selectors.ownLogoLight().style, {
       ...CSS.lightGlow({
         color: ownLogo.lightColor,
@@ -258,10 +267,13 @@ function OrbitingLogosAnimation(options) {
       }),
     });
 
+    // CSS for partner logos lights
     for (let i = 0; i < partnerLogos.length; i++) {
+      // CSS for Partner Logo Containers
       let initialAngle = LogoMath.RadiansToDegrees(LogoMath.EquallySpacedCircleAngle(partnerLogos.length) * i);
-      Selectors.arrays.partnerLogoContainer()[i].style.transform = CSS.rotate(initialAngle).transform;
+      Object.assign(Selectors.arrays.partnerLogoContainer()[i].style, { ...CSS.rotate(initialAngle) });
 
+      // CSS for Partner Logo Lights
       Object.assign(Selectors.arrays.partnerLogoLight()[i].style, {
         ...CSS.lightGlow({ color: partnerLogos[i].lightColor }),
       });
