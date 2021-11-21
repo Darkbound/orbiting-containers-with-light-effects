@@ -172,10 +172,10 @@ function OrbitingLogosAnimation(options) {
       @keyframes partnerLightAnimation {
         0% {
           opacity: 0;
-          left: 35px;   
+          left: ${partnerLogosSize / 2}px;   
         }
         40% {
-          left: 35px;   
+          left: ${partnerLogosSize / 2}px;
           opacity: 1;
         }
       
